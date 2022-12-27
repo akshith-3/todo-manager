@@ -73,27 +73,27 @@ describe("Todo Application", function () {
 
   test("Deletes a todo with the given ID if it exists and sends a boolean response", async () => {
     // FILL IN YOUR CODE HERE
-    const response=await agent.post("/todos").send({
-      title:"Exercise",
-      dueDate:new Date().toISOString(),
-      completed:false, 
+    const response = await agent.post("/todos").send({
+      title: "Exercise",
+      dueDate: new Date().toISOString(),
+      completed: false,
     });
-    const parsedResponse=JSON.parse(response.text);
-    const todoID=parsedResponse.id;
+    const parsedResponse = JSON.parse(response.text);
+    const todoID = parsedResponse.id;
 
-    const response1=await agent.get("/todos");
-    const parsedResponse1=JSON.parse(response1.text);
-    const InitialLength=parsedResponse1.length;
+    const response1 = await agent.get("/todos");
+    const parsedResponse1 = JSON.parse(response1.text);
+    const InitialLength = parsedResponse1.length;
 
     expect(parsedResponse1.length).toBe(5);
 
-    const Deletedtodo=await agent.delete(`/todos/${todoID}`).send();
-    const parsedResponse3=JSON.parse(Deletedtodo.text);
+    const Deletedtodo = await agent.delete(`/todos/${todoID}`).send();
+    const parsedResponse3 = JSON.parse(Deletedtodo.text);
     expect(parsedResponse3).toBe(true);
 
-    const response2=await agent.get("/todos");
-    const parsedResponse2=JSON.parse(response2.text);
+    const response2 = await agent.get("/todos");
+    const parsedResponse2 = JSON.parse(response2.text);
 
-    expect(parsedResponse2.length).toBe(InitialLength-1);
+    expect(parsedResponse2.length).toBe(InitialLength - 1);
   });
 });

@@ -1,15 +1,18 @@
-body{
-    background-color:gray;
-    color:rgb(0,0,0);
-    font-family:"Courier New",Courier,monospace;
+body {
+  background-color: gray;
+  color: rgb(0, 0, 0);
+  font-family: "Courier New", Courier, monospace;
 }
 
-table,th,td{
-    border: 2px solid #000000;
-    border-collapse: collapse;
+table,
+th,
+td {
+  border: 2px solid #000000;
+  border-collapse: collapse;
 }
 
-th,td{
-    padding:15px;
-    background-color:#d1fdfd;
+th,
+td {
+  padding: 15px;
+  background-color: #d1fdfd;
 }

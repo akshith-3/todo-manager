@@ -13,64 +13,84 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
 
-    static getTodos(){
+    static getTodos() {
       return this.findAll();
     }
 
-    static async showList(){
+    static async showList() {
       console.log("My Todo list \n");
 
       console.log("Overdue");
-      console.log((await Todo.overdue()).map((x) => { x.displayableString();}).join("\n"));
+      console.log(
+        (await Todo.overdue())
+          .map((x) => {
+            x.displayableString();
+          })
+          .join("\n")
+      );
 
       console.log("\n");
-      
+
       console.log("Due Today");
-      console.log((await Todo.overdue()).map((x) => { x.displayableString();}).join("\n"));
+      console.log(
+        (await Todo.overdue())
+          .map((x) => {
+            x.displayableString();
+          })
+          .join("\n")
+      );
 
       console.log("\n");
 
       console.log("Due Later");
-      console.log((await Todo.overdue()).map((x) => { x.displayableString();}).join("\n"));
-      
+      console.log(
+        (await Todo.overdue())
+          .map((x) => {
+            x.displayableString();
+          })
+          .join("\n")
+      );
     }
 
-    static async overdue(){
+    static async overdue() {
       return await Todo.findAll({
-        where:{
-          dueDate: { [Op.lt]: new Date().toLocaleDateString("en-CA")},
+        where: {
+          dueDate: { [Op.lt]: new Date().toLocaleDateString("en-CA") },
         },
       });
     }
 
-    static async dueToday(){
+    static async dueToday() {
       return await Todo.findAll({
-        where:{
-          dueDate: { [Op.eq]: new Date().toLocaleDateString("en-CA")},
+        where: {
+          dueDate: { [Op.eq]: new Date().toLocaleDateString("en-CA") },
         },
       });
     }
 
-    static async dueLater(){
+    static async dueLater() {
       return await Todo.findAll({
-        where:{
-          dueDate: { [Op.gt]: new Date().toLocaleDateString("en-CA")},
+        where: {
+          dueDate: { [Op.gt]: new Date().toLocaleDateString("en-CA") },
         },
       });
     }
-   
 
     static addTodo({ title, dueDate }) {
       return this.create({ title: title, dueDate: dueDate, completed: false });
     }
-    
+
     markAsCompleted() {
       return this.update({ completed: true });
     }
 
-    displayableString(){
-      let checkbox=this.completed ? "[x]" : "[ ]";
-      return `${this.id}.${checkbox} ${this.title} ${this.dueDate ==new Date().toLocaleDateString("en-CA") ? "" : this.dueDate}`.trim();
+    displayableString() {
+      let checkbox = this.completed ? "[x]" : "[ ]";
+      return `${this.id}.${checkbox} ${this.title} ${
+        this.dueDate == new Date().toLocaleDateString("en-CA")
+          ? ""
+          : this.dueDate
+      }`.trim();
     }
   }
   Todo.init(
