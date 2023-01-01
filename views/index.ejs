@@ -5,26 +5,38 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./css/style.css" />
-    <title>Document</title>
+    <title>My Todo-list</title>
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body>
-    <header><%- include('header.ejs') %></header>
-    <table>
-      <tr>
-        <th>ID</th>
-        <th>TITLE</th>
-        <th>DUEDATE</th>
-        <th>COMPLETED</th>
-      </tr>
-      <% for(var i=0; i< allTodos.length; i++) { %>
-      <tr>
-        <td><%= allTodos[i].id %></td>
-        <td><%= allTodos[i].title %></td>
-        <td><%= allTodos[i].dueDate %></td>
-        <td><%= allTodos[i].completed %></td>
-      </tr>
-      <% } %>
-    </table>
-    <footer><%- include('footer.ejs') %></footer>
+    <div class="grid grid-cols-3">
+      <div class="col-start-2 colspan-3">
+        <%- include('header') %>
+        <form>
+          <div class="flex gap-2 py-4">
+            <div clas="flex-auto">
+              <input
+                type="text"
+                placeholder="what's next ?"
+                class="border border-gray-300 rounded text-gray-900 w-full p-2 text-sm"
+                required />
+            </div>
+            <div class="flex-auto">
+              <input
+                type="date"
+                class="border border-gray-300 rounded text-gray-900 w-full p-2 text-sm leading-4" />
+            </div>
+            <div class="flex-none">
+              <button
+                type="submit"
+                class="bg-green-600 text-white px-5 py-1.5 rounded font-medium mr-2 mb-2">
+                Add
+              </button>
+            </div>
+          </div>
+        </form>
+        <%- include('todo.ejs') %>
+      </div>
+    </div>
   </body>
 </html>
