@@ -4,27 +4,74 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./css/style.css" />
+    <meta name="csrf-token" content="<%= csrfToken %>" />
+    <link href="./css/style.css" rel="stylesheet" />
     <title>My Todo-list</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      var token = document
+        .querySelector('meta[name="csrf-token"]')
+        .getAttribute("content");
+      const updateTodo = (id) => {
+        const bool = document.getElementById(`value${id}`).checked;
+        console.log(bool);
+        fetch(`/todos/${id}`, {
+          method: "put",
+          headers: { "content-Type": "application/json" },
+          body: JSON.stringify({
+            _csrf: token,
+            completed: bool,
+          }),
+        })
+          .then((res) => {
+            if (res.ok) {
+              window.location.reload();
+            }
+          })
+          .catch((err) => console.error(err));
+      };
+      const deleteTodo = (id) => {
+        fetch(`/todos/${id}`, {
+          method: "delete",
+          headers: { "content-Type": "application/json" },
+          body: JSON.stringify({
+            _csrf: token,
+          }),
+        })
+          .then((res) => {
+            if (res.ok) {
+              window.location.reload();
+            }
+          })
+          .catch((err) => console.error(err));
+      };
+    </script>
   </head>
   <body>
     <div class="grid grid-cols-3">
       <div class="col-start-2 colspan-3">
         <%- include('header') %>
-        <form>
+        <form action="/todos" name="f1" method="post">
+          <input type="hidden" name="_csrf" value="<%= csrfToken%>" />
           <div class="flex gap-2 py-4">
-            <div clas="flex-auto">
+            <div class="flex-auto">
               <input
                 type="text"
+                id="todotext"
+                name="title"
                 placeholder="what's next ?"
                 class="border border-gray-300 rounded text-gray-900 w-full p-2 text-sm"
-                required />
+                required
+                pattern=".*\S+.*"
+                oninvalid="this.setCustomValidity('Enter valid Todo')"
+                oninput="this.setCustomValidity('')" />
             </div>
             <div class="flex-auto">
               <input
                 type="date"
-                class="border border-gray-300 rounded text-gray-900 w-full p-2 text-sm leading-4" />
+                name="dueDate"
+                class="border border-gray-300 rounded text-gray-900 w-full p-2 text-sm leading-4"
+                required />
             </div>
             <div class="flex-none">
               <button
@@ -35,7 +82,12 @@
             </div>
           </div>
         </form>
-        <%- include('todo.ejs') %>
+        <div>
+          <%- include('todo.ejs', {title: "Overdue", data: overdue}) %> <%-
+          include('todo.ejs', {title: "Due Today", data: dueToday}) %> <%-
+          include('todo.ejs', {title: "Due Later", data: dueLater}) %> <%-
+          include('todo.ejs', {title: "Completed Items", data: completed}) %>
+        </div>
       </div>
     </div>
   </body>
