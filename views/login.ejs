@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="<%= csrfToken %>" />
+    <link href="./css/style.css" rel="stylesheet" />
+    <title><%= title %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <div class="grid grid-cols-3">
+      <div class="col-start-2 colspan-3">
+        <%- include('header') %>
+        <div class="py-3">
+          <h6 class="py-4">Login to your account</h6>
+        </div>
+        <form action="/session" method="post">
+          <input type="hidden" name="_csrf" value="<%= csrfToken%>" />
+          <div class="py-3">
+            <label for="email">Email Id : </label>
+            <input
+              type="email"
+              name="email"
+              class="border border-gray-300 rounded text-gray-900 w-full p-2"
+            />
+          </div>
+          <div class="py-3">
+            <label for="password">Password : </label>
+            <input
+              type="password"
+              name="password"
+              class="border border-gray-300 rounded text-gray-900 w-full p-2"
+            />
+          </div>
+          <div class="py-3">
+            <button
+              type="submit"
+              class="bg-green-600 text-white px-5 py-2` rounded font-medium mr-2 mb-2"
+            >
+              sign in
+            </button>
+          </div>
+          <div class="py-3">
+            <% if(messages && messages.error && messages.error.length > 0)  { %>
+              <% for(var i=0; i<messages.error.length; i++) { %>
+                      <li class="text-red-600"> <%= messages.error[i] %></li>
+              <% } %>
+            <% } %>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
