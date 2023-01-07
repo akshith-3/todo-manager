@@ -88,39 +88,44 @@ app.get("/", async function (request, response) {
     });
   }
 });
-app.get("/todos",connectEnsureLogin.ensureLoggedIn(), async function (request, response) {
-  try{
-    const loggedInUser = request.user.id;
-    const firstName = request.user.firstName;
-    const lastName = request.user.lastName;
-    const overdue = await Todo.overdue(loggedInUser);
-    const dueToday = await Todo.dueToday(loggedInUser);
-    const dueLater= await Todo.dueLater(loggedInUser);
-    const completed=await Todo.completedTodo(loggedInUser);
-    if (request.accepts("html")) {
-      response.render("todos", {
-        firstName,
-        lastName,
-        title: "Todo Application",
-        overdue,
-        dueToday,
-        dueLater, 
-        completed,
-        csrfToken: request.csrfToken(),
-    });
-    } else {
-      response.json({
-        firstName,
-        lastName,
-        overdue,
-        dueToday,
-        dueLater,
-        completed,
-      });
-    }catch(err){
+app.get(
+  "/todos",
+  connectEnsureLogin.ensureLoggedIn(),
+  async function (request, response) {
+    try {
+      const loggedInUser = request.user.id;
+      const firstName = request.user.firstName;
+      const lastName = request.user.lastName;
+      const overdue = await Todo.overdue(loggedInUser);
+      const dueToday = await Todo.dueToday(loggedInUser);
+      const dueLater = await Todo.dueLater(loggedInUser);
+      const completed = await Todo.completedTodo(loggedInUser);
+      if (request.accepts("html")) {
+        response.render("todos", {
+          firstName,
+          lastName,
+          title: "Todo Application",
+          overdue,
+          dueToday,
+          dueLater,
+          completed,
+          csrfToken: request.csrfToken(),
+        });
+      } else {
+        response.json({
+          firstName,
+          lastName,
+          overdue,
+          dueToday,
+          dueLater,
+          completed,
+        });
+      }
+    } catch (err) {
       console.log(err);
+    }
   }
-});
+);
   app.get("/signup", (request, response) => {
   response.render("signup", {
     title: "signup",
