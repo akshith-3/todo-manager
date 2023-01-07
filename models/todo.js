@@ -11,42 +11,49 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Todo.belongsTo(models.User, {
+        foreignKey: "userId",
+      });
     }
 
-    static async overdue() {
+    static async overdue(userId) {
       return await Todo.findAll({
         where: {
           dueDate: { [Op.lt]: new Date().toLocaleDateString("en-CA") },
+          userId: userId,
           completed:false,
         },
         order:[["id","ASC"]],
       });
     }
 
-    static async dueToday() {
+    static async dueToday(userId) {
       return await Todo.findAll({
         where: {
           dueDate: { [Op.eq]: new Date().toLocaleDateString("en-CA") },
+          userId: userId,
           completed:false,
         },
         order:[["id","ASC"]],
       });
     }
 
-    static async dueLater() {
+    static async dueLater(userId) {
       return await Todo.findAll({
         where: {
           dueDate: { [Op.gt]: new Date().toLocaleDateString("en-CA") },
+          userId: userId,
           completed:false,
         },
         order:[["id","ASC"]],
       });
     }
 
-    static async completedTodo(){
+    static async completedTodo(userId){
       return await Todo.findAll({
         where:{
           completed:true,
+          userId: userId,
         }
       })
     }
@@ -60,17 +67,18 @@ module.exports = (sequelize, DataTypes) => {
       return this.findAll();
     }
     static addTodo({ title, dueDate }) {
-      return this.create({ title: title, dueDate: dueDate, completed: false });
+      return this.create({ title: title, dueDate: dueDate, completed: false,userId: userId, });
     }
 
     markAsCompleted() {
       return this.update({ completed: true });
     }
 
-    static async remove(id) {
+    static async remove(id,userId) {
       return this.destroy({
         where: {
           id: id,
+          userId: userId,
         },
       });
     }
