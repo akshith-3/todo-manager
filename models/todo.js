@@ -21,9 +21,9 @@ module.exports = (sequelize, DataTypes) => {
         where: {
           dueDate: { [Op.lt]: new Date().toLocaleDateString("en-CA") },
           userId: userId,
-          completed:false,
+          completed: false,
         },
-        order:[["id","ASC"]],
+        order: [["id", "ASC"]],
       });
     }
 
@@ -32,9 +32,9 @@ module.exports = (sequelize, DataTypes) => {
         where: {
           dueDate: { [Op.eq]: new Date().toLocaleDateString("en-CA") },
           userId: userId,
-          completed:false,
+          completed: false,
         },
-        order:[["id","ASC"]],
+        order: [["id", "ASC"]],
       });
     }
 
@@ -43,38 +43,42 @@ module.exports = (sequelize, DataTypes) => {
         where: {
           dueDate: { [Op.gt]: new Date().toLocaleDateString("en-CA") },
           userId: userId,
-          completed:false,
+          completed: false,
         },
-        order:[["id","ASC"]],
+        order: [["id", "ASC"]],
       });
     }
 
-    static async completedTodo(userId){
+    static async completedTodo(userId) {
       return await Todo.findAll({
-        where:{
-          completed:true,
+        where: {
+          completed: true,
           userId: userId,
-        }
-      })
+        },
+      });
     }
 
-    setCompletionStatus(completed){
-      console.log(completed);
-      return this.update({completed:completed});
+    setCompletionStatus(bool) {
+      return this.update({ completed: bool });
     }
 
-    static getTodos(){
+    static getTodos() {
       return this.findAll();
     }
-    static addTodo({ title, dueDate }) {
-      return this.create({ title: title, dueDate: dueDate, completed: false,userId: userId, });
+    static addTodo({ title, dueDate, userId }) {
+      return this.create({
+        title: title,
+        dueDate: dueDate,
+        completed: false,
+        userId: userId,
+      });
     }
 
-    markAsCompleted() {
-      return this.update({ completed: true });
-    }
+    //markAsCompleted() {
+    //return this.update({ completed: true });
+    //}
 
-    static async remove(id,userId) {
+    static async remove(id, userId) {
       return this.destroy({
         where: {
           id: id,
@@ -82,7 +86,6 @@ module.exports = (sequelize, DataTypes) => {
         },
       });
     }
-
   }
   Todo.init(
     {
