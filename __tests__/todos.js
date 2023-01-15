@@ -118,7 +118,7 @@ describe("Todo Application", function () {
     const parseTodos = JSON.parse(Todos.text);
     const countTodaysTodos = parseTodos.dueToday.length;
     const Todo = parseTodos.dueToday[countTodaysTodos - 1];
-    const status = Todo.completed ? true : false;
+    const status = Todo.completed ? false : true;
     res = await agent.get("/todos");
     csrfToken = extractCsrfToken(res);
 
